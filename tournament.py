@@ -51,7 +51,7 @@ class Tournament:
                 print(f"{player1} vs {player2} winner: {winner}")
 
 players = [Player("A"), Player("B"), Player("C"), Player("D"), Player("T")]
-tournament = Tournament(players, games_per_match=3)
+tournament = Tournament(players, games_per_match=100)
 tournament.run()
 scoreboard = Scoreboard(players)
 scoreboard.out()
