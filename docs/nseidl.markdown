@@ -6,7 +6,7 @@ permalink: /nicholas-seidl/
 
 # About Me
 
-![Nicholas Seidl](/assets/images/nseidl.png)
+![Nicholas Seidl](/assets/images/nseidl.jpg)
 
 I'm Nicholas Seidl, I'm from Pewaukee, WI, and I'm a senior Computer Science major at UA. 
 
