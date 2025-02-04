@@ -8,7 +8,7 @@ This is the About-Us page for our member bios.
 
 JT Adams
 
-Nicholas Seidl
+- [Nicholas Seidl] (https://jtadams02.github.io/connect-4/nseidl/)
 
 Justin Saye
 
