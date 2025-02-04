@@ -7,4 +7,4 @@ categories: Connect 4 AI Tournament
 
 This is the slides for our Project Pitch Presentation.
 
-![Deliverable Slides]({{site.url}}/docs/assets/pitch.pdf)
+![Deliverable Slides](/docs/assets/pitch.pdf)
