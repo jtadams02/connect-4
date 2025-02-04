@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Nicholas Seidl
-permalink: /team/nicholas-seidl
+permalink: /nicholas-seidl
 ---
 
 # About Me
