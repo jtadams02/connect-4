@@ -4,7 +4,7 @@ title: About Us
 permalink: /about-us/
 ---
 
-This is the About Us page for our member bios.
+This is the About Us pages for our member bios.
 
 - [JT Adams](/team/jt-adams)  
 - [Nicholas Seidl]({{ site.baseurl }}/nicholas-seidl)  
