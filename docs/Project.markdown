@@ -10,4 +10,4 @@ We are creating a full stack webapp for users to upload simple AI Agents capable
 
 Users will be able to store multiple Agents (or versions of an agent) and view the results of previously ran tournaments. Tournament results will include useful statistics on the results.
 
-![Connect 4 Board]({{ site.baseurl }}/docs/assets/images/connect4.png)
+![Connect 4 Board]({{ site.baseurl }}/connect-4/docs/assets/images/connect4.png)
