@@ -5,10 +5,25 @@ from itertools import combinations
 class Player:
     def __init__(self, name):
         self.name = name
+        self.wins = 0
 
     def __str__(self):
         return self.name
     
+    def inc(self):
+        self.wins += 1
+        
+    def score(self):
+        return self.wins
+    
+class Scoreboard:
+    def __init__ (self, players):
+        self.players = players
+                    
+    def out(self):
+        for player in players:
+            print(f"Player {player.__str__()} score: {player.score()}")
+
 class Game:
     def __init__(self, player1, player2):
         self.player1 = player1
@@ -32,8 +47,11 @@ class Tournament:
             for player1, player2 in matchups:
                 game = Game(player1, player2)
                 winner = game.play()
+                winner.inc()
                 print(f"{player1} vs {player2} winner: {winner}")
 
 players = [Player("A"), Player("B"), Player("C"), Player("D"), Player("T")]
 tournament = Tournament(players, games_per_match=3)
 tournament.run()
+scoreboard = Scoreboard(players)
+scoreboard.out()
