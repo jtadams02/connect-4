@@ -6,5 +6,3 @@ categories: Connect 4 AI Tournament
 ---
 
 This is a test post
-
-![test]({{ site.baseurl }}/_posts/connecttest.png)
