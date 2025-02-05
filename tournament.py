@@ -36,10 +36,11 @@ class Tournament:
             for player1, player2 in matchups:
                 game = Game(player1, player2)
                 winner = game.start()
-                print(f"{player1} vs {player2} winner: {winner}")
-                
-                loser = player1 if winner == player2 else player2
-                self.scoreboard.record_win(winner, loser)
+                sufix = "tie" if winner is None else f"{winner} wins"
+                print(f"{player1} vs {player2}: {sufix}")
+                if winner is not None:
+                    loser = player1 if winner == player2 else player2
+                    self.scoreboard.record_win(winner, loser)
     
         self.scoreboard.display_results()
 
