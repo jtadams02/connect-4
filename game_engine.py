@@ -107,7 +107,7 @@ class Game():
                 print(f"Player {self.players[self.winner].name} wins.")
             else:
                 print("draw.")
-        return self.players[self.winner]
+        return self.players[self.winner] if self.winner else None
     
 if __name__ == "__main__":
     import random as rn
