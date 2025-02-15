@@ -8,18 +8,37 @@ class Scoreboard:
         """Stores results using player names as keys."""
         self.players = {player.name: player for player in players}
         self.results = {player.name: {opponent.name: 0 for opponent in players if opponent != player} for player in players}
+        self.total_wins = {player.name: 0 for player in players}
+        self.total_games = {player.name: 0 for player in players}
 
     def record_win(self, winner_name, loser_name):
         """Records a win for the winner against the loser in the scoreboard."""
         self.results[winner_name][loser_name] += 1
+        self.total_wins[winner_name] += 1
+        self.total_games[winner_name] += 1
+        self.total_games[loser_name] += 1
         
     def display_results(self):
         """Displays the final tournament results."""
+        leaderboard = sorted(self.total_wins.items(), key=lambda x: x[1] / self.total_games[x[0]] if self.total_games[x[0]] > 0 else 0, reverse=True)
+        
+        print("\nLeaderboard:")
+        print("----------------------------------")
+        print("| Rank | Player | Win Percentage |")
+        print("----------------------------------")
+        for rank, (player_name, wins) in enumerate(leaderboard, start=1):
+            total_win_rate = (wins / self.total_games[player_name] * 100) if self.total_games[player_name] > 0 else 0
+            print(f"| {rank:4} | {player_name:10} | {total_win_rate:14.2f}% |")
+        print("----------------------------------")
+        
         print("\nTournament Results:")
         for player_name in self.results:
-            print(f"{player_name}:")
+            total_win_rate = (self.total_wins[player_name] / self.total_games[player_name] * 100) if self.total_games[player_name] > 0 else 0
+            print(f"{player_name} - Overall Win Rate: {total_win_rate:.2f}%")
             for opponent_name, wins in self.results[player_name].items():
-                print(f"    vs {opponent_name}: {wins} wins")
+                total_matches = self.results[player_name][opponent_name] + self.results[opponent_name][player_name]
+                win_rate = (wins / total_matches * 100) if total_matches > 0 else 0
+                print(f"    vs {opponent_name}: {wins} wins ({win_rate:.2f}% win rate)")
             print()
 
 def play_match(player1, player2, games_per_match):
