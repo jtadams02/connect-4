@@ -76,6 +76,19 @@ class Tournament:
         print(f"Average runtime per game: {avg_time_per_game:.4f} seconds")
 
 if __name__ == '__main__':
-    players = [RandomPlayer("A"), RandomPlayer("B"), RandomPlayer("C"), RandomPlayer("D"), RandomPlayer("T")]
-    tournament = Tournament(players, games_per_match=1000)
+    print("This is a tournament engine. Each player will play each other a set amount of times.")
+    
+    # Get the number of players
+    num_players = int(input("Enter the number of players: "))
+    players = []
+    
+    for i in range(num_players):
+        name = input(f"Enter name for player {i + 1}: ")
+        players.append(RandomPlayer(name))
+    
+    # Get the number of games per matchup
+    games_per_match = int(input("Enter the number of games per matchup: "))
+    
+    # Start tournament
+    tournament = Tournament(players, games_per_match)
     tournament.run()
