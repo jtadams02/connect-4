@@ -2,6 +2,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 from itertools import combinations
 from game_engine import RandomPlayer, Game
+import random as rn
 
 class Scoreboard:
     def __init__(self, players):
@@ -63,9 +64,10 @@ class Tournament:
     def run(self):
         """Runs the tournament using parallel processing and measures runtime."""
         matchups = list(combinations(self.players, 2))
+        rn.shuffle(matchups) #randomize order of matchups to avoid any weird bias
         start_time = time.time()  # Start timing execution
 
-        # Use multiprocessing to run games in parallel
+        # Use multiprocessing to run games in parallel, uses all available threads
         with ProcessPoolExecutor() as executor:
             results = executor.map(play_match, 
                                    [p1 for p1, p2 in matchups], 
@@ -91,7 +93,7 @@ class Tournament:
         avg_time_per_game = total_time / self.total_games if self.total_games > 0 else 0
 
         print("\nTournament Performance Metrics:")
-        print(f"Total execution time: {total_time:.4f} seconds")
+        print(f"Tournament execution time: {total_time:.4f} seconds")
         print(f"Average runtime per game: {avg_time_per_game:.4f} seconds")
 
 if __name__ == '__main__':
