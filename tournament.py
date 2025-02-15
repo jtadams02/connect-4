@@ -95,7 +95,7 @@ class Tournament:
         print(f"Average runtime per game: {avg_time_per_game:.4f} seconds")
 
 if __name__ == '__main__':
-    print("This is a tournament engine. Each player will play each other a set amount of times.")
+    print("This is a connect4 tournament engine. Each player will play each other a set amount of times.")
     
     # Get the number of players
     num_players = int(input("Enter the number of players: "))
