@@ -2,7 +2,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 from itertools import combinations
 from game_engine import RandomPlayer, Game
-import random as rn
+import random
 
 class Scoreboard:
     def __init__(self, players):
@@ -45,8 +45,11 @@ class Scoreboard:
 def play_match(player1, player2, games_per_match):
     """Plays a set of games between two players and returns the results."""
     local_results = {player1.name: 0, player2.name: 0}
-
+    
     for _ in range(games_per_match):
+        if random.choice([True, False]):
+            player1, player2 = player2, player1  # Randomize player order
+        
         game = Game(player1, player2)
         winner = game.start()
         if winner is not None:
@@ -64,10 +67,9 @@ class Tournament:
     def run(self):
         """Runs the tournament using parallel processing and measures runtime."""
         matchups = list(combinations(self.players, 2))
-        rn.shuffle(matchups) #randomize order of matchups to avoid any weird bias
         start_time = time.time()  # Start timing execution
 
-        # Use multiprocessing to run games in parallel, uses all available threads
+        # Use multiprocessing to run games in parallel
         with ProcessPoolExecutor() as executor:
             results = executor.map(play_match, 
                                    [p1 for p1, p2 in matchups], 
@@ -93,11 +95,11 @@ class Tournament:
         avg_time_per_game = total_time / self.total_games if self.total_games > 0 else 0
 
         print("\nTournament Performance Metrics:")
-        print(f"Tournament execution time: {total_time:.4f} seconds")
+        print(f"Total execution time: {total_time:.4f} seconds")
         print(f"Average runtime per game: {avg_time_per_game:.4f} seconds")
 
 if __name__ == '__main__':
-    print("This is a connect4 tournament engine. Each player will play each other a set amount of times.")
+    print("This is a tournament engine. Each player will play each other a set amount of times.")
     
     # Get the number of players
     num_players = int(input("Enter the number of players: "))
