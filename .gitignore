@@ -2,3 +2,4 @@
 /src/django-testing/env
 /src/django-testing
 Gemfile.lock
+**/__pycache__/
