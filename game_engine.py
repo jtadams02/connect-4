@@ -51,32 +51,12 @@ class Board():
         col_ind = self.board[col].index(0)
         self.board[col][col_ind] = turn
         return self.check_win()
-    
-class Player():
-    '''
-        Player class which has a name a method to make a move given a Connect4 board (default is the first available move).
-    '''
-    def __init__(self, name:str):
-        self.name = name
-
-    def __repr__(self):
-        return self.name
-
-    def get_move(self, board:Board):
-        return board.get_valid_moves()[0]
-
-class RandomPlayer(Player):
-    '''
-        Player subclass that makes random moves.
-    '''
-    def get_move(self, board:Board):
-        return rn.choice(board.get_valid_moves())
 
 class Game():
     '''
         Game class which takes in two player and runs a game between them once start() is envoked.
     '''
-    def __init__(self, player1:Player, player2:Player):
+    def __init__(self, player1, player2):
         self.players = {1: player1, -1: player2}
         self.c4board = Board()
         self.moves = []
@@ -108,18 +88,3 @@ class Game():
             else:
                 print("draw.")
         return self.players[self.winner] if self.winner else None
-    
-if __name__ == "__main__":
-    import random as rn
-
-    a1 = RandomPlayer("A")
-    a2 = RandomPlayer("B")
-
-    first = 1
-    while 1:
-        game = Game(a1, a2)
-        game.start(first=first, verbose=True)
-        if input('-'*20):
-            break
-        print('Starting new game.\n')
-        first *= -1
