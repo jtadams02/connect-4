@@ -37,15 +37,21 @@ class Scoreboard:
             print(f"| {rank:4} | {player_name:10} | {total_win_rate:8.2f}% |")
         print(line_str)
         
-        print("\nTournament Results:")
-        for player_name in self.results:
-            total_win_rate = (self.total_wins[player_name] / self.total_games[player_name] * 100) if self.total_games[player_name] > 0 else 0
-            print(f"{player_name} - Overall Win Rate: {total_win_rate:.2f}%")
-            for opponent_name, wins in self.results[player_name].items():
-                total_matches = self.results[player_name][opponent_name] + self.results[opponent_name][player_name]
-                win_rate = (wins / total_matches * 100) if total_matches > 0 else 0
-                print(f"    vs {opponent_name}: {wins} wins ({win_rate:.2f}% win rate)")
-            print()
+        print("\nWin Percentage Matrix:")
+        player_names = list(self.results.keys())
+        header = "        " + "  ".join(f"{name[:5]:>5}" for name in player_names)
+        print(header)
+        print("  " + "-" * len(header))
+        for player in player_names:
+            row = [f"{player[:5]:>5}"]
+            for opponent in player_names:
+                if player == opponent:
+                    row.append("  -  ")  # No self-matches
+                else:
+                    total_matches = self.results[player][opponent] + self.results[opponent][player]
+                    win_rate = (self.results[player][opponent] / total_matches * 100) if total_matches > 0 else 0
+                    row.append(f"{win_rate:5.1f}%")
+            print("  ".join(row))
 
 def play_match(player1, player2, games_per_match):
     """Plays a set of games between two players and returns the results."""
