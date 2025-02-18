@@ -1,6 +1,14 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
+from .models import TournamentExecution
 
-# Create your views here.
 def home(request):
-    return render(request, "home.html")
-
+    if request.method == 'POST':
+        num_players = int(request.POST.get('num_players', 2))
+        tournament = TournamentExecution.objects.create(num_players=num_players)
+        results = tournament.run_tournament()
+        return render(request, 'home.html', {
+            'results': results,
+            'tournament': tournament
+        })
+    
+    return render(request, 'home.html')
