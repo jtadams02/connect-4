@@ -1,4 +1,29 @@
-{% extends "base.html" %} {% block title %} Home Page {% endblock %}
-{% block content %}
-<p>This is the homepage<p>
-{% endblock %}
+<form method="post">
+    {% csrf_token %}
+    <select name="num_players">
+        {% for i in "234"|make_list %}
+            <option value="{{ i }}">{{ i }} Players</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Run Tournament</button>
+</form>
+
+{% if results %}
+    <h2>Tournament Results</h2>
+    
+    <h3>Leaderboard</h3>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Win %</th>
+        </tr>
+        {% for player in results.leaderboard %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ player.name }}</td>
+            <td>{{ player.win_percentage|floatformat:1 }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
