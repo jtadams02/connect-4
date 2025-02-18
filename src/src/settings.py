@@ -11,10 +11,15 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# FOR FILE UPLOADS
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -38,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'fileupload',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +61,7 @@ ROOT_URLCONF = 'src.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,14 +81,25 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
+
+    # TODO: ADD BACK IN DATABASE STUFF, DISABLED FOR LOCAL TESTING
+
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'usersdb',
-        'USER' : 'postgres',
-        'PASSWORD' : "password",
-        'HOST' : 'localhost',
-        'PORT' : '5433',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',  # Uses an in-memory DB (resets on restart)
     }
+
+
+    #'default': {
+    #    'ENGINE': 'django.db.backends.postgresql',
+    #    'NAME': 'usersdb',
+    #    'USER' : 'postgres',
+    #    'PASSWORD' : "password",
+    #    'HOST' : 'localhost',
+    #    'PORT' : '5433',
+    #}
+
+
 }
 
 

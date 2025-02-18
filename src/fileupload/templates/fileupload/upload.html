@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload File TEST</title>
+</head>
+<body>
+    <h2 style="text-align:center">Upload a Python File TEST</h2>
+    <form method="post" enctype="multipart/form-data" style="text-align:center">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+    <a  href="{% url 'file_list' %}" style="text-align:center">View Uploaded Files</a>
+</body>
+</html>

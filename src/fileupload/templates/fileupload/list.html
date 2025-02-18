@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title >File List TEST</title>
+</head>
+<body>
+    <h2 style="text-align:center">Uploaded Files TEST</h2>
+    <ul>
+        {% for file in files %}
+            <li style="text-align:center"><a href="{{ MEDIA_URL }}uploads/{{ file }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'upload_file' %}">Upload Another File</a>
+</body>
+</html>
