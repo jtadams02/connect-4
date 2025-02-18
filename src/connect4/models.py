@@ -1,12 +1,12 @@
 from django.db import models
 import json
 
-class TournamentExecution(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    num_players = models.IntegerField()
-    games_per_match = models.IntegerField(default=10)
-    total_execution_time = models.FloatField(null=True)
-    results = models.JSONField(null=True)  # Will store both matrix and leaderboard
+class TournamentExecution:
+    def __init__(self, num_players, games_per_match=10):
+        self.num_players = num_players
+        self.games_per_match = games_per_match
+        self.results = None
+        self.total_execution_time = None
 
     def run_tournament(self):
         """Runs a tournament with the specified number of players using RandomPlayer"""
@@ -45,6 +45,4 @@ class TournamentExecution(models.Model):
         }
         
         self.total_execution_time = tournament.total_execution_time
-        self.save()
-        
         return self.results
