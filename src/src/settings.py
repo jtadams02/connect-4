@@ -86,7 +86,7 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # Uses an in-memory DB (resets on restart)
+        'NAME': ':memory:',  # Uses an in-memory DB (resets on restart)
     }
 
 
