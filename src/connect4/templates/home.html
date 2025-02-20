@@ -1,29 +1,75 @@
-<form method="post">
-    {% csrf_token %}
-    <select name="num_players">
-        {% for i in "234"|make_list %}
-            <option value="{{ i }}">{{ i }} Players</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Run Tournament</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connect 4 Tournament</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <select name="num_players">
+            {% for i in "23456"|make_list %}
+                <option value="{{ i }}">{{ i }} Players</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="num_games" min="1" max="100" placeholder="Games per match">
+        <button type="submit">Run Tournament</button>
+    </form>
 
-{% if results %}
-    <h2>Tournament Results</h2>
-    
-    <h3>Leaderboard</h3>
-    <table>
-        <tr>
-            <th>Rank</th>
-            <th>Player</th>
-            <th>Win %</th>
-        </tr>
-        {% for player in results.leaderboard %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ player.name }}</td>
-            <td>{{ player.win_percentage|floatformat:1 }}%</td>
-        </tr>
-        {% endfor %}
-    </table>
-{% endif %}
+    {% if results %}
+        <h2>Tournament Results</h2>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <h4>Total Games</h4>
+                <p>{{ results.total_games }}</p>
+            </div>
+            <div class="stat-box">
+                <h4>Total Time</h4>
+                <p>{{ results.total_time|floatformat:2 }} seconds</p>
+            </div>
+            <div class="stat-box">
+                <h4>Time per Game</h4>
+                <p>{{ results.time_per_game|floatformat:4 }} seconds</p>
+            </div>
+            <div class="stat-box">
+                <h4>Games per Second</h4>
+                <p>{{ results.games_per_second|floatformat:1 }}</p>
+            </div>
+        </div>
+        
+        <h3>Leaderboard</h3>
+        <table border="1">
+            <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Win %</th>
+            </tr>
+            {% for player in results.leaderboard %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ player.name }}</td>
+                <td>{{ player.win_percentage|floatformat:1 }}%</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Win Percentage Matrix</h3>
+        <p>Each cell shows how often the row player won against the column player</p>
+        <table border="1">
+            {% for row in results.win_matrix %}
+                <tr>
+                    {% for cell in row %}
+                        {% if forloop.parentloop.first or forloop.first %}
+                            <th>{{ cell }}</th>
+                        {% else %}
+                            <td>{{ cell }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
