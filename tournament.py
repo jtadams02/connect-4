@@ -1,5 +1,4 @@
 import time
-import random
 import importlib.util
 import os
 import sys
@@ -27,7 +26,7 @@ class Scoreboard:
         """Displays the final tournament results."""
         leaderboard = sorted(self.total_wins.items(), key=lambda x: x[1] / self.total_games[x[0]] if self.total_games[x[0]] > 0 else 0, reverse=True)
         
-        line_str = "-"*34
+        line_str = "-"*33
         print("\nLeaderboard:")
         print(line_str)
         print("| Rank |   Player   |   Win %   |")
@@ -58,8 +57,7 @@ def play_match(player1, player2, games_per_match):
     local_results = {player1.name: 0, player2.name: 0}
     
     for _ in range(games_per_match):
-        if random.choice([True, False]):
-            player1, player2 = player2, player1  # Randomize player order
+        player1, player2 = player2, player1  # Swap player order
         
         game = Game(player1, player2)
         winner = game.start()
@@ -119,9 +117,8 @@ def get_ai_list(dir):
             module = importlib.util.module_from_spec(spec)
             sys.modules[module_name] = module
             spec.loader.exec_module(module)
-            
             for _, obj in inspect.getmembers(module, inspect.isclass):
-                if obj.__module__ == module_name:
+                if obj.__name__ == module_name:
                     ai_list.append(obj)
                     break
     
