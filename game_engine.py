@@ -19,6 +19,11 @@ class Board():
             s = s + "\n"
         return s[:-1]
     
+    def copy(self):
+        cop = Board()
+        cop.board = [col.copy() for col in self.board]
+        return cop
+    
     def is_valid_move(self, col:int):
         return not self.board[col][-1]
     
@@ -73,7 +78,7 @@ class Game():
             print(f"\nPlayer 1: {self.players[first].name} - {CM[first]},  Player 2: {self.players[-first].name} - {CM[-first]}.\n")
         turn = first
         while 1:
-            move = self.players[turn].get_move(self.c4board)
+            move = self.players[turn].get_move(self.c4board, turn)
             win = self.c4board.move(turn, move)
             self.moves.append(move)
             if verbose:
