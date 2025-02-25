@@ -74,3 +74,13 @@ class TournamentExecution:
         
         self.total_execution_time = tournament.total_execution_time
         return self.results
+    
+#example user profile class, to be extended and reworked to work with OAUTH
+#based on this stackoverflow post: https://stackoverflow.com/questions/6085025/django-user-profile
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    email = models.ForeignKey(Email, unique=True)
+    password = models.ForeignKey(pwd)
+    
+    def __unicode__(self):
+        return u'Profile of user: %s' % self.user
