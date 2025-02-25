@@ -3,6 +3,7 @@ import importlib.util
 import os
 import sys
 import inspect
+import json
 from concurrent.futures import ThreadPoolExecutor
 from itertools import combinations
 from game_engine import Game
@@ -21,6 +22,36 @@ class Scoreboard:
         self.total_wins[winner_name] += 1
         self.total_games[winner_name] += 1
         self.total_games[loser_name] += 1
+        
+    def save_results(self):
+        """Saves the results to a JSON file in 'past_tournaments'"""
+        folder = os.path.abspath("past_tournaments") 
+        os.makedirs(folder, exist_ok=True)  # Create if it doesn't exist
+        
+        filename = os.path.join(folder, f"results_{int(time.time())}.json")
+        
+        leaderboard = sorted(self.total_wins.items(), key=lambda x: x[1] / self.total_games[x[0]] if self.total_games[x[0]] > 0 else 0, reverse=True)
+        
+        # Prepare leaderboard data
+        leaderboard_data = [
+            {"rank": rank + 1, "player": player_name, "win_percentage": (wins / self.total_games[player_name] * 100) if self.total_games[player_name] > 0 else 0}
+            for rank, (player_name, wins) in enumerate(leaderboard)
+        ]
+
+        # Prepare win percentage matrix
+        win_matrix = {}
+        for player in self.results:
+            win_matrix[player] = {}
+            for opponent in self.results[player]:
+                total_matches = self.results[player][opponent] + self.results[opponent][player]
+                win_rate = (self.results[player][opponent] / total_matches * 100) if total_matches > 0 else 0
+                win_matrix[player][opponent] = win_rate
+
+        # Save to JSON
+        with open(filename, "w") as f:
+            json.dump({"leaderboard": leaderboard_data, "win_matrix": win_matrix}, f, indent=4)
+
+        print(f"\nTournament results saved to {filename}")
         
     def display_results(self):
         """Displays the final tournament results."""
@@ -51,6 +82,8 @@ class Scoreboard:
                     win_rate = (self.results[player][opponent] / total_matches * 100) if total_matches > 0 else 0
                     row.append(f"{win_rate:5.1f}%")
             print("  ".join(row))
+            
+        self.save_results() #saves the results to json
 
 def play_match(player1, player2, games_per_match):
     """Plays a set of games between two players and returns the results."""
