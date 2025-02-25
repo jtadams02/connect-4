@@ -3,3 +3,4 @@
 /src/django-testing
 Gemfile.lock
 **/__pycache__/
+/CLI-Only/past_tournaments/*
