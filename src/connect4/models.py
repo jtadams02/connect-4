@@ -77,6 +77,9 @@ class TournamentExecution:
     
 #example user profile class, to be extended and reworked to work with OAUTH
 #based on this stackoverflow post: https://stackoverflow.com/questions/6085025/django-user-profile
+#other sources:
+    #https://learndjango.com/tutorials/django-userprofile-model
+    
 #class UserProfile(models.Model):
     #user = models.ForeignKey(User, unique=True)
     #email = models.ForeignKey(Email, unique=True)
