@@ -1,11 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Connect 4 Tournament</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
     <form method="post">
         {% csrf_token %}
         <select name="num_players">
@@ -71,5 +65,4 @@
             {% endfor %}
         </table>
     {% endif %}
-</body>
-</html>
+{% endblock %}

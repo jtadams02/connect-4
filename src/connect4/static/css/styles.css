@@ -2,7 +2,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0px;
     background-color: #f5f5f5;
     color: #333;
 }
@@ -147,4 +147,20 @@ p {
     font-size: 24px;
     color: #3498db;
     font-weight: 500;
-} 
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #3498db;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    text-decoration: none;
+    padding: 0;
+}
+
+.logout-btn:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
