@@ -59,8 +59,7 @@ def play_match(player1, player2, games_per_match):
     local_results = {player1.name: 0, player2.name: 0}
     
     for _ in range(games_per_match):
-        if random.choice([True, False]):
-            player1, player2 = player2, player1  # Randomize player order
+        player1, player2 = player2, player1  # Swap player order
         
         game = Game(player1, player2)
         winner = game.start()
