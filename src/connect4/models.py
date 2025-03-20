@@ -80,6 +80,7 @@ class TournamentExecution:
 #other sources:
     #https://learndjango.com/tutorials/django-userprofile-model
     
+# Needs statistics
 #class UserProfile(models.Model):
     #user = models.ForeignKey(User, unique=True)
     #email = models.ForeignKey(Email, unique=True)

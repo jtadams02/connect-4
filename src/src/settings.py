@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
 import os
+
+# Initalize environ 
+env = environ.Env()
+environ.Env.read_env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -84,20 +89,20 @@ DATABASES = {
 
     # TODO: ADD BACK IN DATABASE STUFF, DISABLED FOR LOCAL TESTING
 
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': ':memory:',  # Uses an in-memory DB (resets on restart)
+    # }
+
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',  # Uses an in-memory DB (resets on restart)
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': env("DB_NAME"),
+       'USER' : env("DB_USER"),
+       'PASSWORD' : env("DB_PASSWORD"),
+       'HOST' : env("DB_HOST"),
+       'PORT' : '5432',
     }
-
-
-    #'default': {
-    #    'ENGINE': 'django.db.backends.postgresql',
-    #    'NAME': 'usersdb',
-    #    'USER' : 'postgres',
-    #    'PASSWORD' : "password",
-    #    'HOST' : 'localhost',
-    #    'PORT' : '5433',
-    #}
 
 
 }
@@ -121,6 +126,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
