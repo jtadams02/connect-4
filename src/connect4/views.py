@@ -1,26 +1,39 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .models import TournamentExecution
+from .tournament import get_ai_list
 
 def home(request):
+
+    print("Loading AI Scripts")
+    ai_list = get_ai_list("AI_scripts")
+    ai_class_names = [ai.__name__ for ai in ai_list] 
+    
+    context = {
+        'ai_class_names': ai_class_names,
+        'results': None,
+    }
+    
     if request.method == 'POST':
-        num_players = int(request.POST.get('num_players', 2))
-        num_games = 50
+        selected_names = request.POST.getlist('selected_ais')
 
-        # Make sure num_games is not empty
-        if request.POST.get('num_games'):
-            num_games = int(request.POST.get('num_games',50))
+        if not selected_names:
+            context['error'] = "No AI classes selected."
+            return render(request, 'home.html', context)
 
-        # Also we're just gonna have the bare minimum be 50 games, cuz we can
-        if num_games < 50: num_games=50
-        tournament = TournamentExecution(num_players=num_players,games_per_match=num_games) 
+        print(f"Selected AI classes from POST: {selected_names}")
+
+        num_games = int(request.POST.get('num_games',50))
+
+        tournament = TournamentExecution(selected_names, num_games) 
         results = tournament.run_tournament()
-        return render(request, 'home.html', {
+        
+        context.update({
             'results': results,
-            'tournament': tournament
+            'tournament': tournament,
         })
     
-    return render(request, 'home.html')
+    return render(request, 'home.html', context)
 
 def register(request):
     if request.method == 'POST':

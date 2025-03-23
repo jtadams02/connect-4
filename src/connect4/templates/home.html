@@ -2,12 +2,18 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <select name="num_players">
-            {% for i in "23456"|make_list %}
-                <option value="{{ i }}">{{ i }} Players</option>
-            {% endfor %}
-        </select>
-        <input type="number" name="num_games" min="1" max="10000" placeholder="Games per matchup">
+
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        <label>Select AI Classes:</label><br>
+        {% for ai_name in ai_class_names %}
+            <input type="checkbox" name="selected_ais" value="{{ ai_name }}"> {{ ai_name }}<br>
+        {% endfor %}
+
+        <label>Games per matchup:</label>
+        <input type="number" name="num_games" min="1" max="10000" placeholder="Games per matchup" value="50">
         <button type="submit">Run Tournament</button>
     </form>
 

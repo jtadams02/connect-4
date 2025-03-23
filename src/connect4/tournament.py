@@ -1,5 +1,4 @@
 import time
-import random
 import importlib.util
 import os
 import sys
@@ -109,51 +108,45 @@ class Tournament:
         print(f"Total execution time: {total_time:.4f} seconds")
         print(f"Average runtime per game: {avg_time_per_game:.4f} seconds")
 
+# Correct Example
 def get_ai_list(dir):
-    """Import all AI classes present in a given directory."""
-    # Create the full path to AI_scripts directory
-    ai_scripts_path = os.path.join(os.path.dirname(__file__), 'AI_scripts')
-    
+    ai_scripts_path = os.path.join(os.path.dirname(__file__), dir)
     ai_list = []
     for file in os.listdir(ai_scripts_path):
         if file.endswith(".py"):
             module_name = file[:-3]
             module_path = os.path.join(ai_scripts_path, file)
-            
             spec = importlib.util.spec_from_file_location(module_name, module_path)
             module = importlib.util.module_from_spec(spec)
-            sys.modules[module_name] = module
             spec.loader.exec_module(module)
             
             for _, obj in inspect.getmembers(module, inspect.isclass):
                 if obj.__module__ == module_name:
                     ai_list.append(obj)
-                    break
-    
     return ai_list
 
-if __name__ == '__main__':
-    print("\nThis is a tournament engine. Each player will play each other a set amount of times. Below are the available AI classes.")
+# if __name__ == '__main__':
+#     print("\nThis is a tournament engine. Each player will play each other a set amount of times. Below are the available AI classes.")
 
-    AI_list = get_ai_list("AI_scripts")
-    for i,cls in enumerate(AI_list):
-        print(f"    {i+1}: {cls.__name__}")
+#     AI_list = get_ai_list("AI_scripts")
+#     for i,cls in enumerate(AI_list):
+#         print(f"    {i+1}: {cls.__name__}")
     
-    # Get the number of players
-    num_players = int(input("\nEnter the number of players: "))
-    players = []
+#     # Get the number of players
+#     num_players = int(input("\nEnter the number of players: "))
+#     players = []
     
-    for i in range(num_players):
-        name = input(f"\nEnter name for player {i + 1}: ")
-        ai_class_ind = input(f"Enter class for player {i + 1} (1-{len(AI_list)}): ")
-        assert ai_class_ind.isnumeric(), f"Class must must be an integer ranging from 1 to {len(AI_list)}."
-        ai_class_ind = int(ai_class_ind)
-        assert 1 <= ai_class_ind <= len(AI_list), f"Invalid AI index: {ai_class_ind}."
-        players.append(AI_list[ai_class_ind-1](name))
+#     for i in range(num_players):
+#         name = input(f"\nEnter name for player {i + 1}: ")
+#         ai_class_ind = input(f"Enter class for player {i + 1} (1-{len(AI_list)}): ")
+#         assert ai_class_ind.isnumeric(), f"Class must must be an integer ranging from 1 to {len(AI_list)}."
+#         ai_class_ind = int(ai_class_ind)
+#         assert 1 <= ai_class_ind <= len(AI_list), f"Invalid AI index: {ai_class_ind}."
+#         players.append(AI_list[ai_class_ind-1](name))
     
-    # Get the number of games per matchup
-    games_per_match = int(input("\nEnter the number of games per matchup: "))
+#     # Get the number of games per matchup
+#     games_per_match = int(input("\nEnter the number of games per matchup: "))
     
-    # Start tournament
-    tournament = Tournament(players, games_per_match)
-    tournament.run()
+#     # Start tournament
+#     tournament = Tournament(players, games_per_match)
+#     tournament.run()
