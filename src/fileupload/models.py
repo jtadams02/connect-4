@@ -1,4 +1,13 @@
 from django.db import models
+
+class UploadedFile(models.Model):
+    file_name = models.CharField(max_length=255)
+    file_url = models.URLField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.file_name
+    
 import json
 
 class TournamentExecution:
@@ -75,17 +84,3 @@ class TournamentExecution:
         self.total_execution_time = tournament.total_execution_time
         return self.results
     
-#example user profile class, to be extended and reworked to work with OAUTH
-#based on this stackoverflow post: https://stackoverflow.com/questions/6085025/django-user-profile
-#other sources:
-    #https://learndjango.com/tutorials/django-userprofile-model
-    
-# Needs statistics
-#class UserProfile(models.Model):
-    #user = models.ForeignKey(User, unique=True)
-    #email = models.ForeignKey(Email, unique=True)
-    #password = models.ForeignKey(pwd)
-    
-    #def __unicode__(self):
-    #    return u'Profile of user: %s' % self.user
-
