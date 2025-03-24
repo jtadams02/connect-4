@@ -8,5 +8,5 @@ class DefaultPlayer():
     def __repr__(self):
         return self.name
 
-    def get_move(self, board):
+    def get_move(self, board, turn):
         return board.get_valid_moves()[0]
