@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import TournamentExecution
 from .tournament import get_ai_list
 
-def home(request):
 
+def home(request):
     print("Loading AI Scripts")
     ai_list = get_ai_list("connect4/AI_scripts")
     ai_class_names = [ai.__name__ for ai in ai_list] 
@@ -13,7 +13,7 @@ def home(request):
         'ai_class_names': ai_class_names,
         'results': None,
     }
-    
+
     if request.method == 'POST':
         selected_names = request.POST.getlist('selected_ais')
 
@@ -23,16 +23,17 @@ def home(request):
 
         print(f"Selected AI classes from POST: {selected_names}")
 
-        num_games = int(request.POST.get('num_games',50))
-
-        tournament = TournamentExecution(selected_names, num_games) 
+        num_games = int(request.POST.get('num_games', 50))
+        tournament = TournamentExecution(selected_names, num_games)
         results = tournament.run_tournament()
-        
-        context.update({
-            'results': results,
-            'tournament': tournament,
-        })
-    
+
+        # Serialize results and store in session
+        request.session['tournament_results'] = results  # Make sure `results` is JSON-serializable
+        return redirect('home')  # Redirect to avoid re-POST on refresh
+
+    elif 'tournament_results' in request.session:
+        context['results'] = request.session.pop('tournament_results')  # Use and remove it
+
     return render(request, 'home.html', context)
 
 def register(request):
