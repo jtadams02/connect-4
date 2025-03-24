@@ -8,6 +8,7 @@ def home(request):
     print("Loading AI Scripts")
     ai_list = get_ai_list("connect4/AI_scripts")
     ai_class_names = [ai.__name__ for ai in ai_list] 
+    print("Available AI Scripts: ", ai_class_names)
     
     context = {
         'ai_class_names': ai_class_names,
@@ -24,6 +25,8 @@ def home(request):
         print(f"Selected AI classes from POST: {selected_names}")
 
         num_games = int(request.POST.get('num_games', 50))
+        print("Games per Matchup: ", num_games)
+        print("Running tournament")
         tournament = TournamentExecution(selected_names, num_games)
         results = tournament.run_tournament()
 
