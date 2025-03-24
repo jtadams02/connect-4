@@ -110,20 +110,40 @@ class Tournament:
 
 # Correct Example
 def get_ai_list(dir):
-    ai_scripts_path = os.path.join(os.path.dirname(__file__), dir)
+    """Import all AI classes present in a given directory."""
+    print("Acessing directory ", dir)
     ai_list = []
-    for file in os.listdir(ai_scripts_path):
+    for file in os.listdir(dir):
         if file.endswith(".py"):
             module_name = file[:-3]
-            module_path = os.path.join(ai_scripts_path, file)
+            module_path = os.path.join(dir, file)
+            
             spec = importlib.util.spec_from_file_location(module_name, module_path)
             module = importlib.util.module_from_spec(spec)
+            sys.modules[module_name] = module
             spec.loader.exec_module(module)
-            
             for _, obj in inspect.getmembers(module, inspect.isclass):
-                if obj.__module__ == module_name:
+                if obj.__name__ == module_name:
                     ai_list.append(obj)
+                    break
+    
     return ai_list
+
+# def get_ai_list(dir):
+#     ai_scripts_path = os.path.join(os.path.dirname(__file__), dir)
+#     ai_list = []
+#     for file in os.listdir(ai_scripts_path):
+#         if file.endswith(".py"):
+#             module_name = file[:-3]
+#             module_path = os.path.join(ai_scripts_path, file)
+#             spec = importlib.util.spec_from_file_location(module_name, module_path)
+#             module = importlib.util.module_from_spec(spec)
+#             spec.loader.exec_module(module)
+            
+#             for _, obj in inspect.getmembers(module, inspect.isclass):
+#                 if obj.__module__ == module_name:
+#                     ai_list.append(obj)
+#     return ai_list
 
 # if __name__ == '__main__':
 #     print("\nThis is a tournament engine. Each player will play each other a set amount of times. Below are the available AI classes.")

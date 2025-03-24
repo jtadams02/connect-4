@@ -11,7 +11,7 @@ class TournamentExecution:
         
     def load_players(self):
         """Load AI classes based on provided names and instantiate them."""
-        available_classes = get_ai_list("AI_scripts")
+        available_classes = get_ai_list("connect4/AI_scripts")
         class_map = {cls.__name__: cls for cls in available_classes}
 
         players = []
@@ -39,13 +39,12 @@ class TournamentExecution:
                     row.append('-')
                 else:
                     total_matches = (
-                        tournament.scoreboard.results[player][opponent]
-                        + tournament.scoreboard.results[opponent][player]
+                        tournament.scoreboard.results[player][opponent] +
+                        tournament.scoreboard.results[opponent][player]
                     )
                     win_rate = (
                         (tournament.scoreboard.results[player][opponent] / total_matches) * 100
-                        if total_matches > 0
-                        else 0
+                        if total_matches > 0 else 0
                     )
                     row.append(f"{win_rate:.1f}%")
             win_matrix.append(row)
@@ -69,13 +68,13 @@ class TournamentExecution:
                         'win_percentage': (
                             wins / tournament.scoreboard.total_games[player_name] * 100
                             if tournament.scoreboard.total_games[player_name] else 0
-                        ),
+                        )
                     }
                     for player_name, wins in tournament.scoreboard.total_wins.items()
                 ],
                 key=lambda x: x['win_percentage'],
-                reverse=True,
-            ),
+                reverse=True
+            )
         }
 
         self.total_execution_time = total_time

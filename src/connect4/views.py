@@ -6,7 +6,7 @@ from .tournament import get_ai_list
 def home(request):
 
     print("Loading AI Scripts")
-    ai_list = get_ai_list("AI_scripts")
+    ai_list = get_ai_list("connect4/AI_scripts")
     ai_class_names = [ai.__name__ for ai in ai_list] 
     
     context = {
