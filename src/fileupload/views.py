@@ -20,6 +20,10 @@ def upload_file(request):
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = form.cleaned_data['file']
+
+            if not uploaded_file.name.endswith('.py'):
+                error_message = "Only Python files (.py) are allowed."
+                return render(request, 'fileupload/upload.html', {'form': form, 'error': error_message})
             
             try:
                 # Define the upload path
@@ -46,7 +50,7 @@ def upload_file(request):
 
                 logger.info(f"File {uploaded_file.name} uploaded successfully to {upload_path}")
 
-                return redirect('file_list')
+                return redirect('/')
             except Exception as e:
                 logger.error(f"Upload error: {e}")
                 return render(request, 'fileupload/upload.html', {'form': form, 'error': str(e)})
@@ -57,11 +61,11 @@ def upload_file(request):
     return render(request, 'fileupload/upload.html', {'form': form})
 
 
-def file_list(request):
-    upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads') # Get upload directory
-    files = [] # initilize file list
-
-    if os.path.exists(upload_dir):
-        files = os.listdir(upload_dir)
-
-    return render(request, 'fileupload/list.html', {'files': files}) # Render page with file list
+#def file_list(request):
+#    upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads') # Get upload directory
+#    files = [] # initilize file list
+#
+#    if os.path.exists(upload_dir):
+#        files = os.listdir(upload_dir)
+#
+#    return render(request, 'fileupload/list.html', {'files': files}) # Render page with file list
