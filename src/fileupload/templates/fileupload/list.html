@@ -1,10 +1,14 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title >File List TEST</title>
+    <title >File Uploaded!</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h2 style="text-align:center">Uploaded Files TEST</h2>
+    <h2 style="text-align:center">File Uploaded!</h2>
     <ul>
         {% for file in files %}
             <li style="text-align:center"><a href="{{ MEDIA_URL }}uploads/{{ file }}">{{ file }}</a></li>
