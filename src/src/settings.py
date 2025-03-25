@@ -22,6 +22,8 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+FILE_UPLOAD_PATH = BASE_DIR / "connect-4" / "AI_Scripts"
+
 # FOR FILE UPLOADS
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -63,7 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fileupload', # app for uploading files
-    'storages',
+    # 'storages',
 ]
 
 MIDDLEWARE = [
