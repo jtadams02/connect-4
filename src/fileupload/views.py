@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import FileUploadForm
 import os
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -14,7 +15,7 @@ from google.cloud import storage
 
 logger = logging.getLogger(__name__)
 
-
+@login_required(login_url='/login')
 def upload_file(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)

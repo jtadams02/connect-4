@@ -22,9 +22,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home</a>
             </li>
+            {% if request.user.is_authenticated %}
             <li class="nav-item active">
                 <a class="nav-link" href="/fileupload/upload">Upload Agent</a> 
             </li>
+            {%endif%}
         </ul>
     </div>
 
