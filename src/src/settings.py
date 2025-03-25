@@ -26,6 +26,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# FOR FILE UPLOADS
+
+GS_BUCKET_NAME = "user_ai"  # Replace with your actual bucket name
+GS_CREDENTIALS_PATH = os.path.join(BASE_DIR, "cred.json")
+
+# Storage settings
+#DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"  # Use GCS for file storage
+#print("DEFAULT_FILE_STORAGE:", DEFAULT_FILE_STORAGE)
+
+GS_CREDENTIALS = GS_CREDENTIALS_PATH
+GS_FILE_OVERWRITE = False  # Prevent overwriting files with the same name
+MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -49,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fileupload', # app for uploading files
+    'storages',
 ]
 
 MIDDLEWARE = [
