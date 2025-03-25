@@ -5,3 +5,4 @@ Gemfile.lock
 **/__pycache__/
 /CLI-Only/past_tournaments/*
 **.env
+**.json
