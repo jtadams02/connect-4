@@ -1,0 +1,1 @@
+ssh -i ~/.ssh/gcp-ssh-key jtman5@34.46.250.37
