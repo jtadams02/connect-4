@@ -140,20 +140,25 @@ class Tournament:
 
 def get_ai_list(dir):
     """Import all AI classes present in a given directory."""
+
+    ai_files = [file for file in os.listdir(dir) if file.endswith(".py")]
+    assert "DefaultPlayer.py" in ai_files, "DefaultPlayer.py not found in AI_Scripts."
+    ai_files.remove("DefaultPlayer.py")
+    ai_files.insert(0, "DefaultPlayer.py")
+
     ai_list = []
-    for file in os.listdir(dir):
-        if file.endswith(".py"):
-            module_name = file[:-3]
-            module_path = os.path.join(dir, file)
-            
-            spec = importlib.util.spec_from_file_location(module_name, module_path)
-            module = importlib.util.module_from_spec(spec)
-            sys.modules[module_name] = module
-            spec.loader.exec_module(module)
-            for _, obj in inspect.getmembers(module, inspect.isclass):
-                if obj.__name__ == module_name:
-                    ai_list.append(obj)
-                    break
+    for file in ai_files:
+        module_name = file[:-3]
+        module_path = os.path.join(dir, file)
+        
+        spec = importlib.util.spec_from_file_location(module_name, module_path)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = module
+        spec.loader.exec_module(module)
+        for _, obj in inspect.getmembers(module, inspect.isclass):
+            if obj.__name__ == module_name:
+                ai_list.append(obj)
+                break
     
     return ai_list
 
