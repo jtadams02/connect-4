@@ -6,8 +6,8 @@ from .tournament import get_ai_list
 
 def home(request):
     print("Loading AI Scripts")
-    ai_list = get_ai_list("connect4/AI_scripts")
-    ai_class_names = [ai.__name__ for ai in ai_list] 
+    ai_list = get_ai_list("connect4/AI_scripts") #import ai list from directory
+    ai_class_names = [ai.__name__ for ai in ai_list] #extract just the names from the list
     print("Available AI Scripts: ", ai_class_names)
     
     context = {
@@ -16,7 +16,7 @@ def home(request):
     }
 
     if request.method == 'POST':
-        selected_names = request.POST.getlist('selected_ais')
+        selected_names = request.POST.getlist('selected_ais') #read selected ais from the user
 
         if not selected_names:
             context['error'] = "No AI classes selected."
@@ -24,7 +24,7 @@ def home(request):
 
         print(f"Selected AI classes from POST: {selected_names}")
 
-        num_games = int(request.POST.get('num_games', 50))
+        num_games = int(request.POST.get('num_games', 50)) #default to 50 games
         print("Games per Matchup: ", num_games)
         print("Running tournament")
         tournament = TournamentExecution(selected_names, num_games)

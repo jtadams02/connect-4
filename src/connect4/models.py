@@ -1,6 +1,7 @@
 from django.db import models
 from connect4.tournament import Tournament, get_ai_list
 
+#executes the given tournament
 class TournamentExecution:
     def __init__(self, player_class_names, games_per_match):
         self.player_class_names = player_class_names
@@ -11,7 +12,7 @@ class TournamentExecution:
         
     def load_players(self):
         """Load AI classes based on provided names and instantiate them."""
-        available_classes = get_ai_list("connect4/AI_scripts")
+        available_classes = get_ai_list("connect4/AI_scripts") #import ais, cannot directly pass from the import in views.py
         class_map = {cls.__name__: cls for cls in available_classes}
 
         players = []
