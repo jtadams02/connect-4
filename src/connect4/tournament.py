@@ -8,6 +8,7 @@ from itertools import combinations
 from connect4.game_engine import Game
 from django.conf import settings
 
+#class to store and display tournament results 
 class Scoreboard:
     def __init__(self, players):
         """Stores results using player names as keys."""
@@ -37,6 +38,7 @@ class Scoreboard:
             print(f"| {rank:4} | {player_name:10} | {total_win_rate:8.2f}% |")
         print(line_str)
         
+        #displays a matrix of the results for each matchup
         print("\nWin Percentage Matrix:")
         player_names = list(self.results.keys())
         header = "        " + "  ".join(f"{name[:5]:>5}" for name in player_names)
@@ -67,6 +69,7 @@ def play_match(player1, player2, games_per_match):
     
     return player1.name, player2.name, local_results  # Return names instead of objects
 
+#class for tournament, holding players and executing games
 class Tournament:
     def __init__(self, players, games_per_match):
         self.players = players
@@ -77,10 +80,10 @@ class Tournament:
 
     def run(self):
         """Runs the tournament using parallel processing and measures runtime."""
-        matchups = list(combinations(self.players, 2))
+        matchups = list(combinations(self.players, 2)) #creates all matchups, in round robin format with each player playing every other player 
         start_time = time.time()  # Start timing execution
 
-        # Use multiprocessing to run games in parallel
+        # Use multiprocessing to run games in parallel to increase performance
         with ThreadPoolExecutor() as executor:
             p1_list, p2_list = zip(*matchups)
             results = executor.map(play_match, p1_list, p2_list, [self.games_per_match] * len(matchups))
@@ -96,8 +99,8 @@ class Tournament:
         end_time = time.time()  # End timing execution
         self.total_execution_time = end_time - start_time
 
-        self.scoreboard.display_results()
-        self.display_performance_metrics(start_time, end_time)
+        self.scoreboard.display_results() #display results
+        self.display_performance_metrics(start_time, end_time) #display time metrics
 
     def display_performance_metrics(self, start_time, end_time):
         """Calculates and prints tournament performance statistics."""
@@ -108,12 +111,11 @@ class Tournament:
         print(f"Total execution time: {total_time:.4f} seconds")
         print(f"Average runtime per game: {avg_time_per_game:.4f} seconds")
 
-# Correct Example
 def get_ai_list(dir):
     """Import all AI classes present in a given directory."""
     
     ai_files = [file for file in os.listdir(dir) if file.endswith(".py")]
-    assert "DefaultPlayer.py" in ai_files, "DefaultPlayer.py not found in AI_Scripts."
+    assert "DefaultPlayer.py" in ai_files, "DefaultPlayer.py not found in AI_Scripts." #manually ensures the default player template is loaded first
     ai_files.remove("DefaultPlayer.py")
     ai_files.insert(0, "DefaultPlayer.py")
 
