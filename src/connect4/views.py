@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .models import TournamentExecution
 from .tournament import get_ai_list
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 import json
 from datetime import datetime
 
@@ -27,13 +27,13 @@ def home(request):
                 try:
                     # Load the JSON data from the uploaded file
                     data = json.load(uploaded_file)
-                    # Validate structure by checking essential keys
+                    # Validate structure by checking the keys
                     if all(key in data for key in ['total_games', 'total_time', 'time_per_game', 'games_per_second', 'leaderboard', 'win_matrix']):
                         request.session['tournament_results'] = data
                         context['results'] = data
                         print("Successfully imported tournament results.")
                     else:
-                        context['error'] = "Invalid tournament results format."
+                        context['error'] = "Invalid JSON data format."
                 except json.JSONDecodeError:
                     context['error'] = "Invalid JSON file format."
             else:
