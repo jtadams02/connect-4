@@ -1,88 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-    .form-container {
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-    }
-
-    .checkbox-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 10px;
-        margin: 15px 0;
-        padding: 10px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-    }
-
-    .checkbox-grid label {
-        display: flex;
-        align-items: center;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    button[type=submit] {
-        background-color: #0d6efd;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    button[type=submit]:hover {
-        background-color: #0b5ed7;
-    }
-
-    .stats-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        margin: 20px 0;
-    }
-
-    .stat-box {
-        flex: 1 1 200px;
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 25px;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: center;
-        border: 1px solid #dee2e6;
-    }
-
-    th {
-        background-color: #0d6efd;
-        color: white;
-    }
-
-</style>
 
 <div class="form-container">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-
-        {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
-
         <div class="form-group">
             <label><strong>Select AI Classes:</strong></label>
             <div class="checkbox-grid">
@@ -101,6 +22,17 @@
         </div>
 
         <button type="submit">Run Tournament</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="json_file"><strong>Import Tournament Results (JSON):</strong></label>
+        <input type="file" name="json_file" accept=".json">
+        <button type="submit" name="import_json">Import Results</button>
     </form>
 </div>
 
@@ -158,11 +90,9 @@
         {% endfor %}
     </table>
 
-    {% if results %}
     <form action="{% url 'export_results' %}" method="get">
         <button type="submit">Download Results as JSON</button>
     </form>
-    {% endif %}
-
 {% endif %}
+
 {% endblock %}
