@@ -10,5 +10,6 @@ urlpatterns = [
     path("",views.home, name="home"),
     path("login/",auth_views.LoginView.as_view(template_name="login.html"),name='login'),
     path("logout/",custom_logout,name='logout'),
-    path('register',views.register,name='register')
+    path('register',views.register,name='register'),
+    path('export/', views.export_results, name='export_results')
 ]

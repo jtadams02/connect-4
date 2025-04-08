@@ -157,5 +157,12 @@
             </tr>
         {% endfor %}
     </table>
+
+    {% if results %}
+    <form action="{% url 'export_results' %}" method="get">
+        <button type="submit">Download Results as JSON</button>
+    </form>
+    {% endif %}
+
 {% endif %}
 {% endblock %}
