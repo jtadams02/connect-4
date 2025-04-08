@@ -9,7 +9,8 @@ from datetime import datetime
 
 def home(request):
     print("Loading AI Scripts")
-    ai_list = get_ai_list("connect4/AI_scripts")  # import ai list from directory
+    ai_list = get_ai_list("connect4/AI_scripts")  # import ai list from directory.
+    #^^^ This is not actually imported into the tournament call later, it was causing problems so saving just the names and passing that was a workaround. This has some performance implications but probably acceptable
     ai_class_names = [ai.__name__ for ai in ai_list]  # extract just the names from the list
     print("Available AI Scripts: ", ai_class_names)
 
