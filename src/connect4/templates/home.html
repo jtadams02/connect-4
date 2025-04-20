@@ -1,8 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
 
-<div class="form-container">
-    <form method="post" enctype="multipart/form-data">
+<div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+    <img src="{% static 'images/loading.gif' %}" alt="Loading..." />
+    <p>Running tournament, please wait...</p>
+</div>
+
+
+<div id="main-form">
+    <form method="post" enctype="multipart/form-data" onsubmit="return delaySubmit(this)">
         {% csrf_token %}
         <div class="form-group">
             <label><strong>Select AI Classes:</strong></label>
@@ -94,5 +102,16 @@
         <button type="submit">Export Results as JSON</button>
     </form>
 {% endif %}
+
+<script>
+    function delaySubmit(form) {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('main-form').style.display = 'none';
+        
+        setTimeout(() => form.submit(), 100);
+
+        return false; // Prevent default submission until timeout
+    }
+</script>
 
 {% endblock %}
