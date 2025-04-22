@@ -15,7 +15,6 @@ from google.cloud import storage
 
 logger = logging.getLogger(__name__)
 
-# Uses django.contrib.auth.decorators - Really cool!
 @login_required(login_url='/login')
 def upload_file(request):
     if request.method == 'POST':

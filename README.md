@@ -87,3 +87,9 @@ Upon recieving a POST request it first checks if the user is running a tournamen
 The Register view is used to allow the user to register a new account.
 
 The export_results view exports the currently displayed tournament results, if it exists. It uses the current exact date to the second as the name of the JSON to ensure unique and useful naming.
+
+# fileupload
+
+The file uploading features of this application were developed as a seperate app in Django, so it has it's own views.py, urls.py, etc. 
+
+Please see the README in the file upload sub-directory to learn more
