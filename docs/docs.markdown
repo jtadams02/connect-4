@@ -16,7 +16,7 @@ Welcome to the documentation! This guide will help you install, use, and modify 
 **Download the repository:**
    ```bash
    git clone https://github.com/jtadams02/connect-4.git
-
+    ```S
 **Virtual Enviornment**
 
 First setup the virtual environment by going into the root directory, and running the following 
