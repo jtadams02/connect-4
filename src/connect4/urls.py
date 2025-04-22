@@ -1,15 +1,21 @@
-from django.urls import path
+from django.urls import path,include
 from django.shortcuts import redirect
+from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
+from django.views.generic import TemplateView
 from . import views
+
 def custom_logout(request):
     logout(request)
     return redirect('home')
+
 urlpatterns = [
     path("",views.home, name="home"),
-    path("login/",auth_views.LoginView.as_view(template_name="login.html"),name='login'),
+    path("login/",lambda request: redirect("/accounts/google/login/?next=/")),
     path("logout/",custom_logout,name='logout'),
     path('register',views.register,name='register'),
-    path('export/', views.export_results, name='export_results')
+    path('export/', views.export_results, name='export_results'),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),  # Allauth URLs
 ]

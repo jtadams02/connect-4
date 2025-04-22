@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse
 from .models import TournamentExecution
 from .tournament import get_ai_list
 from django.http import HttpResponse
 import json
 from datetime import datetime
+
+# Get OAUTH view
+from allauth.socialaccount.providers.google.views import OAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
 
 
 def home(request):
@@ -81,6 +87,8 @@ def register(request):
     return render(request,"register.html", {
         "form" : form,
     })
+
+
     
 def export_results(request):
     results = request.session.get('tournament_results', None)
