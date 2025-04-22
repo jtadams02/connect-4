@@ -35,6 +35,13 @@ Now the virtualenv is activated, install the requirements using this:
 > pip install -r requirements.txt
 ```
 
+**Create the Docker image:**
+
+Install Docker, navigate to the /connect4 directory, and execute the following command to create the tournament Docker image:
+```console
+> docker build -t tournament_image .
+```
+
 All dependencies should be installed, to test the server switch to the ```src/``` directory and run the following:
 ```console
 > python manage.py runserver
@@ -43,19 +50,19 @@ All dependencies should be installed, to test the server switch to the ```src/``
 
 # How To Use Each Feature
 
-Login System
+**Login System:**
 
 To-Do
 
-User Profiles
+**User Profiles:**
 
 To-Do
 
-Uploading a Bot
+**Uploading a Bot:**
 
 The menu link titled Upload Agent takes the user to a page where a python file containing an extension of the standard player class. 
 
-Running A Tournament
+**Running A Tournament:**
 
 First select which AI Agents are to be included in the tournament
 This tournament will be a round robin format tournament, so each chosen model will compete against every other model.

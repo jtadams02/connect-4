@@ -2,20 +2,26 @@ import time
 import importlib.util
 import os
 import sys
+import json
 import inspect
 from concurrent.futures import ThreadPoolExecutor
 from itertools import combinations
 from connect4.game_engine import Game
-from django.conf import settings
 
 #class to store and display tournament results 
 class Scoreboard:
     def __init__(self, players):
         """Stores results using player names as keys."""
-        self.players = {player.name: player for player in players}
         self.results = {player.name: {opponent.name: 0 for opponent in players if opponent != player} for player in players}
         self.total_wins = {player.name: 0 for player in players}
         self.total_games = {player.name: 0 for player in players}
+
+    def to_dict(self):
+        return {
+            'results': self.results, 
+            'total_wins': self.total_wins,
+            'total_games': self.total_games
+        }
 
     def record_win(self, winner_name, loser_name):
         """Records a win for the winner against the loser in the scoreboard."""
@@ -57,14 +63,41 @@ class Scoreboard:
 
 #class for tournament, holding players and executing games
 class Tournament:
-    def __init__(self, players, games_per_match):
-        self.players = players
+    def __init__(self, player_class_names, games_per_match):
+        self.player_class_names = player_class_names
+        self.players = self.load_players()
         self.games_per_match = games_per_match
-        self.scoreboard = Scoreboard(players)
-        self.total_games = len(list(combinations(players, 2))) * games_per_match
+        self.scoreboard = Scoreboard(self.players)
+        self.total_games = ((len(self.players)*(len(self.players)-1))//2) * games_per_match
         self.total_execution_time = None
 
-    def run(self):
+    def to_dict(self):
+        return {
+            'player_class_names': self.player_class_names, 
+            'games_per_match': self.games_per_match,
+            'scoreboard': self.scoreboard.to_dict(),
+            'total_games': self.total_games,
+            'total_execution_time': self.total_execution_time
+        }
+    
+    def serialize(self):
+        return json.dumps(self.to_dict())
+
+    def load_players(self):
+        """Load AI classes based on provided names and instantiate them."""
+        available_classes = get_ai_list("connect4/AI_scripts") #import ais, cannot directly pass from the import in views.py
+        class_map = {cls.__name__: cls for cls in available_classes}
+
+        players = []
+        for name in self.player_class_names:
+            if name in class_map:
+                players.append(class_map[name](name))
+            else:
+                raise ValueError(f"AI class '{name}' not found.")
+
+        return players
+
+    def run(self, verbose=True):
         """Runs the tournament using parallel processing and measures runtime."""
         matchups = list(combinations(self.players, 2)) #creates all matchups, in round robin format with each player playing every other player 
         start_time = time.time()  # Start timing execution
@@ -85,8 +118,9 @@ class Tournament:
         end_time = time.time()  # End timing execution
         self.total_execution_time = end_time - start_time
 
-        self.scoreboard.display_results() #display results
-        self.display_performance_metrics(start_time, end_time) #display time metrics
+        if verbose:
+            self.scoreboard.display_results() #display results
+            self.display_performance_metrics(start_time, end_time) #display time metrics
 
     def display_performance_metrics(self, start_time, end_time):
         """Calculates and prints tournament performance statistics."""
@@ -113,7 +147,6 @@ def play_match(player1, player2, games_per_match):
 
 def get_ai_list(dir):
     """Import all AI classes present in a given directory."""
-    
     ai_files = [file for file in os.listdir(dir) if file.endswith(".py")]
     assert "DefaultPlayer.py" in ai_files, "DefaultPlayer.py not found in AI_Scripts." #manually ensures the default player template is loaded first
     ai_files.remove("DefaultPlayer.py")
@@ -134,3 +167,11 @@ def get_ai_list(dir):
                 break
     
     return ai_list
+
+if __name__ == '__main__':
+    args = sys.argv
+    player_class_names = args[1:-1]
+    games_per_match = int(args[-1])
+    tournament = Tournament(player_class_names, games_per_match)
+    tournament.run(verbose=False)
+    print(tournament.serialize())

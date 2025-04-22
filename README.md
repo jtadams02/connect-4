@@ -54,15 +54,15 @@ At the bottom of the page there is an option to export the results of a tourname
 
 # game_engine.py
 
-This is the Connect-4 Engine used by the application
+This is the Connect-4 Engine used by the application.
 
 # tournament.py
 
 This file contains the tournament engine. It executes a round robin format tournament using the game_engine.py. It consists of two classes, Scoreboard and Tournament, and two helper functions.
 
-The Scoreboard class stires the players, game results, and contains a function for displaying the full results of an executed tournament. It accepts a list of players as a parameter and is used by the Tournament class.
+The Scoreboard class stores the players, game results, and contains a function for displaying the full results of an executed tournament. It accepts a list of players as a parameter and is used by the Tournament class.
 
-The Tournament class accepts a list of players and an integer number of games_per_match. It executes the tournament in the run function using python's ThreadPoolExecutor to run the games in parallel. It also tracks and displays time metrics.
+The Tournament class accepts a list of player_class_names strings and integer of games_per_match. It loads the players using the get_ai_list function. It then executes the tournament in the run function using python's ThreadPoolExecutor to run the games in parallel. It also tracks and displays time metrics.
 
 The play_match function executes a set number of games between two players. It swaps which player is player1 and player2 each game, this is to prevent the tournament from being biased as the first player has a small advantage in Connect 4.
 
@@ -74,7 +74,7 @@ This file, stored in the AI_Scripts folder, is the default player class that all
 
 # models.py
 
-This contains the django model to run a tournament, stored in the class TournamentExecution. It accepts a list of player_class_names strings and integer of games_per_match. It loads the players using the get_ai_list function and then creates and run a tournament; both from tournament.py. It stores the results of the tournament in its results variable
+This contains the django model to run a tournament, stored in the class TournamentExecution. It accepts a list of player_class_names strings and integer of games_per_match. It creates a container in which a tournament is run using these parameters. It then stores the results of the tournament in its results variable.
 
 # views.py
 
