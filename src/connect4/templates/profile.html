@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Welcome, {{ request.user.username }}</h1>
+        <h2>Your Uploaded Files</h2>
+
+        {% if user_files %}
+            <div class="row">
+                {% for file in user_files %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ file.file_name }} - {%if file.visible%} Visible {% else %} Hidden {%endif%} </h5>
+                                <div class="d-flex justify-content-between">
+                                    <!-- Visible Button -->
+                                    <form method="post" action="{% url 'toggle_visibility' file.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success btn-sm">Toggle Visibility</button>
+                                    </form>
+                                    <!-- Delete Button -->
+                                    <form method="post" action="{% url 'delete_file' file.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">You have not uploaded any files yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

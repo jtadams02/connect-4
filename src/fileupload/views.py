@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from .models import UploadedFile
+from .models import UploadFile
 
 import logging
 
@@ -15,8 +15,10 @@ from google.cloud import storage
 
 logger = logging.getLogger(__name__)
 
+# Uses django.contrib.auth.decorators - Really cool!
 @login_required(login_url='/login')
 def upload_file(request):
+    # print(request.user)
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -28,14 +30,22 @@ def upload_file(request):
             
             try:
                 target_dir = settings.BASE_DIR
-                print(target_dir)
+                # print(target_dir)
                 new_file_path = os.path.join(target_dir,"connect4","AI_scripts",uploaded_file.name)
-                print(new_file_path)
+                # print(new_file_path)
                 with open(new_file_path, 'wb') as f:
-                    print('yay')
+                    # print('yay')
                     for chunk in uploaded_file.chunks():
                         print(chunk)
                         f.write(chunk)
+                
+                # Save file metadata to PostgreSQL database
+                UploadFile.objects.create(
+                    user=request.user,
+                    file_name=uploaded_file.name,
+                    visible=False
+                )
+
                 #Commenting out below for demo purposes!
 
                 # local_path = os.path.join(settings.MEDIA_ROOT, 'uploads', uploaded_file.name)

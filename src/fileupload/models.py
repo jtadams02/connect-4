@@ -1,12 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class UploadedFile(models.Model):
+class UploadFile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Connect file to the user
     file_name = models.CharField(max_length=255)
-    file_url = models.URLField()
-    date = models.DateTimeField(auto_now_add=True)
+    # file_url = models.URLField()
+    # date = models.DateTimeField(auto_now_add=True) # Not sure if this is needed
+    visible = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.file_name
+        return f"{self.file_name}"
     
 import json
 

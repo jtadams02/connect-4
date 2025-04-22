@@ -18,4 +18,7 @@ urlpatterns = [
     path('export/', views.export_results, name='export_results'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),  # Allauth URLs
+    path('profile/', views.user_profile, name='user_profile'),
+    path('toggle_visibility/<int:file_id>/', views.toggle_visibility, name='toggle_visibility'),
+    path('delete_file/<int:file_id>/', views.delete_file, name='delete_file'),
 ]

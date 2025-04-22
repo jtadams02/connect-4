@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from .models import TournamentExecution
@@ -6,6 +6,8 @@ from .tournament import get_ai_list
 from django.http import HttpResponse
 import json
 from datetime import datetime
+
+from fileupload.models import UploadFile
 
 # Get OAUTH view
 from allauth.socialaccount.providers.google.views import OAuth2Adapter
@@ -17,7 +19,17 @@ def home(request):
     print("Loading AI Scripts")
     ai_list = get_ai_list("connect4/AI_scripts")  # import ai list from directory.
     #^^^ This is not actually imported into the tournament call later, it was causing problems so saving just the names and passing that was a workaround. This has some performance implications but probably acceptable
-    ai_class_names = [ai.__name__ for ai in ai_list]  # extract just the names from the list
+    get_visible_files  = UploadFile.objects.filter(user=request.user, visible=True)
+    visible_files = [res.file_name[:-3] for res in get_visible_files]
+    print(visible_files)
+    # Now add the base classes to the visible list:
+    visible_files.append("RandomPlayer")
+    visible_files.append("MiniMaxPlayer")
+    visible_files.append("DefaultPlayer")
+    visible_files.append("ExamplePlayer ")
+    print(ai_list)
+    # Need to only show toggled AI Scripts
+    ai_class_names = [ai.__name__ for ai in ai_list if ai.__name__ in visible_files]  # extract just the names from the list
     print("Available AI Scripts: ", ai_class_names)
 
     context = {
@@ -100,3 +112,20 @@ def export_results(request):
     response = HttpResponse(json.dumps(results, indent=4), content_type='application/json')
     response['Content-Disposition'] = f'attachment; filename={file_name}'
     return response
+
+
+def user_profile(request):
+    user_files = UploadFile.objects.filter(user=request.user)
+
+    return render(request, 'profile.html', {'user_files': user_files})
+
+def toggle_visibility(request, file_id):
+    file = get_object_or_404(UploadFile, id=file_id, user=request.user)
+    file.visible = not file.visible
+    file.save()
+    return redirect('user_profile')
+
+def delete_file(request, file_id):
+    file = get_object_or_404(UploadFile, id=file_id, user=request.user)
+    file.delete()
+    return redirect('user_profile')
