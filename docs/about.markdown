@@ -1,12 +1,15 @@
 ---
 layout: page
-title: About Us
-permalink: /about-us/
+title: Docs
+permalink: /docs/
 ---
 
-This is the About Us pages for our member bios.
+This is a page for describing our project.
 
-- [JT Adams](/team/jt-adams)  
-- [Nicholas Seidl]({{ site.baseurl }}/nicholas-seidl)  
-- [Justin Saye]({{ site.baseurl }}/justin-saye)
-- [Harrison Stewart]({{ site.baseurl }}/harrison-stewart)
+We are creating a full stack webapp for users to upload simple AI Agents capable of playing connect 4. Our webapp will allow users to test their AI Agents against other user uploaded AI Agents in a Round Robin tournament format in order to gain valuable experimental data on the fitness of their Agent.
+
+Users will be able to store multiple Agents (or versions of an agent) and view the results of previously ran tournaments. Tournament results will include useful statistics on the results.
+
+![Connect 4 Board]({{ site.baseurl }}/assets/images/connect4.png)
+
+[Download Sprint 1 Documentation]( {{ site.baseurl }}/assets/Sprint1.zip)

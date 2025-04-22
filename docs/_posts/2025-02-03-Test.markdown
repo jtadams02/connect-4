@@ -1,8 +1,0 @@
----
-layout: post
-title:  "Test"
-date:   2025-02-03 00:00:02 -0600
-categories: Connect 4 AI Tournament
----
-
-This is a test post
