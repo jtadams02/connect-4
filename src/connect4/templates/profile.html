@@ -3,7 +3,9 @@
     <div class="container mt-4">
         <h1 class="mb-4">Welcome, {{ request.user.username }}</h1>
         <h2>Your Uploaded Files</h2>
-
+        {% if error %}
+        <h3>You can only have 1 file visible at a time!</h3>
+        {%endif%}
         {% if user_files %}
             <div class="row">
                 {% for file in user_files %}
@@ -13,14 +15,14 @@
                                 <h5 class="card-title">{{ file.file_name }} - {%if file.visible%} Visible {% else %} Hidden {%endif%} </h5>
                                 <div class="d-flex justify-content-between">
                                     <!-- Visible Button -->
-                                    <form method="post" action="{% url 'toggle_visibility' file.id %}">
+                                    <form method="post" action="{% url 'toggle_visibility' file.id %}" class="no-border">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-success btn-sm">Toggle Visibility</button>
+                                        <button type="submit" class="btn btn-success btn-sm ">Toggle Visibility</button>
                                     </form>
                                     <!-- Delete Button -->
-                                    <form method="post" action="{% url 'delete_file' file.id %}">
+                                    <form method="post" action="{% url 'delete_file' file.id %}" class="no-border">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm"> Delete</button>
                                     </form>
                                 </div>
                             </div>

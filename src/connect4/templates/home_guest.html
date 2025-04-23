@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container text-center" style="margin-top: 100px;">
+    <h1>Welcome to the Connect-495's Testing Server</h1>
+    <p style="font-size: 18px; color: #666; margin: 20px 0;">
+        Please log in to access the ability to test your Python bots!
+    </p>
+    <a href="{% url 'login' %}" class="btn btn-primary" style="font-size: 18px; padding: 12px 24px;">
+        Log In via Google OAUTH
+    </a>
+</div>
+{% endblock %}

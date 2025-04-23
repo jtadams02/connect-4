@@ -12,7 +12,7 @@ def custom_logout(request):
 
 urlpatterns = [
     path("",views.home, name="home"),
-    path("login/",lambda request: redirect("/accounts/google/login/?next=/")),
+    path("login/",views.oauth_login, name='login'),
     path("logout/",custom_logout,name='logout'),
     path('register',views.register,name='register'),
     path('export/', views.export_results, name='export_results'),
