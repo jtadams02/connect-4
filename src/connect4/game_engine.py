@@ -1,4 +1,5 @@
 import random as rn
+from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 class Board():
     '''
@@ -60,12 +61,14 @@ class Board():
 class Game():
     '''
         Game class which takes in two player and runs a game between them once start() is envoked.
+        If a player takes longer than 10ms to respond or plays an invalid move, they automatically lose.
     '''
     def __init__(self, player1, player2):
         self.players = {1: player1, -1: player2}
         self.c4board = Board()
         self.moves = []
         self.winner = 0
+        self.timeout = 0.01 # timeout length in seconds. Set to 10 miliseconds
 
     def print_move(self, turn:int, move:int):
         print("".join(Board.char_map[turn] if col==move else " " for col in range(7)))
@@ -77,8 +80,21 @@ class Game():
         if verbose:
             print(f"\nPlayer 1: {self.players[first].name} - {CM[first]},  Player 2: {self.players[-first].name} - {CM[-first]}.\n")
         turn = first
-        while 1:
-            move = self.players[turn].get_move(self.c4board, turn)
+
+        while True:
+            move = None
+            try:
+                with ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(self.players[turn].get_move, self.c4board.copy(), turn)
+                    move = future.result(timeout=self.timeout)
+                if not self.c4board.is_valid_move(move):
+                    raise ValueError("Invalid move")
+            except (TimeoutError, ValueError, Exception):
+                if verbose:
+                    print(f"Player {self.players[turn].name} forfeits due to timeout or invalid move.")
+                self.winner = -turn
+                break
+
             win = self.c4board.move(turn, move)
             self.moves.append(move)
             if verbose:
@@ -87,9 +103,10 @@ class Game():
                 self.winner = win
                 break
             turn *= -1
+
         if verbose:
             if self.winner:
                 print(f"Player {self.players[self.winner].name} wins.")
             else:
-                print("draw.")
+                print("Draw.")
         return self.players[self.winner] if self.winner else None
