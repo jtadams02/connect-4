@@ -19,7 +19,7 @@ def home(request):
     print("Loading AI Scripts")
     ai_list = get_ai_list("connect4/AI_scripts")  # import ai list from directory.
     #^^^ This is not actually imported into the tournament call later, it was causing problems so saving just the names and passing that was a workaround. This has some performance implications but probably acceptable
-    get_visible_files  = UploadFile.objects.filter(user=request.user, visible=True)
+    get_visible_files  = UploadFile.objects.filter(visible=True)
     visible_files = [res.file_name[:-3] for res in get_visible_files]
     print(visible_files)
     # Now add the base classes to the visible list:
@@ -114,18 +114,67 @@ def export_results(request):
     return response
 
 
+
+    return render(request, 'profile.html', {'user_files': user_files, 'error': error})
+    currently_visible_file = UploadFile.objects.filter(user=request.user,visible=True).first()
+
+    # Now add the base classes to the visible list:
+@ -114,18 +118,36 @@ def export_results(request):
+    return response
+
+
 def user_profile(request):
     user_files = UploadFile.objects.filter(user=request.user)
 
     return render(request, 'profile.html', {'user_files': user_files})
+    return render(request, 'profile.html', {'user_files': user_files, 'error': error})
 
 def toggle_visibility(request, file_id):
     file = get_object_or_404(UploadFile, id=file_id, user=request.user)
     file.visible = not file.visible
     file.save()
     return redirect('user_profile')
+    currently_visible_file = UploadFile.objects.filter(user=request.user,visible=True).first()
+
+    # If there are no visible files right now, just toggle the one the user requested
+    if currently_visible_file is None:
+        file = get_object_or_404(UploadFile, id=file_id, user=request.user)
+        file.visible = not file.visible
+        file.save()
+        return redirect('user_profile')
+    
+    # if the user is trying to toggle the currently visible file, just toggle it off
+    if (file_id == currently_visible_file.id):
+        currently_visible_file.visible = not currently_visible_file.visible
+        currently_visible_file.save()
+        return redirect('user_profile')
+    else: 
+        # If there is already a visible file, print an error message!
+        e = "You can only have one visible file at a time!"
+        return redirect('user_profile',e)
 
 def delete_file(request, file_id):
     file = get_object_or_404(UploadFile, id=file_id, user=request.user)
     file.delete()
     return redirect('user_profile')
+
+def oauth_login(request):
+    # Redirect to Google OAuth login
+    return redirect("/accounts/google/login/?next=/")trying to toggle the currently visible file, just toggle it off
+    if (file_id == currently_visible_file.id):
+        currently_visible_file.visible = not currently_visible_file.visible
+        currently_visible_file.save()
+        return redirect('user_profile')
+    else: 
+        # If there is already a visible file, print an error message!
+        e = "You can only have one visible file at a time!"
+        return redirect('user_profile',e)
+
+def delete_file(request, file_id):
+    file = get_object_or_404(UploadFile, id=file_id, user=request.user)
+    file.delete()
+    return redirect('user_profile')
+
+def oauth_login(request):
+    # Redirect to Google OAuth login
+    return redirect("/accounts/google/login/?next=/")
