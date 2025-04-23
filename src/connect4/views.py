@@ -118,10 +118,9 @@ def export_results(request):
     return response
 
 
-def user_profile(request,error=None):
+def user_profile(request):
     user_files = UploadFile.objects.filter(user=request.user)
-
-    return render(request, 'profile.html', {'user_files': user_files, 'error': error})
+    return render(request, 'profile.html', {'user_files': user_files})
 
 def toggle_visibility(request, file_id):
     currently_visible_file = UploadFile.objects.filter(user=request.user,visible=True).first()
@@ -141,8 +140,7 @@ def toggle_visibility(request, file_id):
     else: 
         # If there is already a visible file, print an error message!
         e = "You can only have one visible file at a time!"
-        return redirect('user_profile',e)
-
+        return redirect('user_profile')
 def delete_file(request, file_id):
     file = get_object_or_404(UploadFile, id=file_id, user=request.user)
     file.delete()

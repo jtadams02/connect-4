@@ -1,11 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get all the file cards
+        const fileCards = document.querySelectorAll('.card');
+
+        // Check if any file is already marked as visible
+        let visibleFileExists = false;
+        fileCards.forEach(card => {
+            const isVisible = card.querySelector('.card-title').textContent.includes('Visible');
+            if (isVisible) {
+                visibleFileExists = true;
+            }
+        });
+
+        // If a visible file exists, disable the "Toggle Visibility" button for other files
+        if (visibleFileExists) {
+            fileCards.forEach(card => {
+                const isVisible = card.querySelector('.card-title').textContent.includes('Visible');
+                const toggleButton = card.querySelector('form[action*="toggle_visibility"] button');
+                if (!isVisible) {
+                    toggleButton.disabled = true;
+                    toggleButton.classList.add('disabled');
+                    toggleButton.title = 'You must hide the currently visible file before marking another file as visible.';
+                }
+            });
+        }
+    });
+</script>
     <div class="container mt-4">
         <h1 class="mb-4">Welcome, {{ request.user.username }}</h1>
         <h2>Your Uploaded Files</h2>
-        {% if error %}
-        <h3>You can only have 1 file visible at a time!</h3>
-        {%endif%}
         {% if user_files %}
             <div class="row">
                 {% for file in user_files %}
