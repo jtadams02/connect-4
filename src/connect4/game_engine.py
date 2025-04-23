@@ -1,4 +1,5 @@
 import random as rn
+from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 class Board():
     '''
@@ -59,26 +60,48 @@ class Board():
 
 class Game():
     '''
-        Game class which takes in two player and runs a game between them once start() is envoked.
+        Game class which takes in two players and runs a game between them once start() is invoked.
+        Players forfeit if they exceed 10ms per move or make an invalid move.
     '''
     def __init__(self, player1, player2):
         self.players = {1: player1, -1: player2}
         self.c4board = Board()
         self.moves = []
         self.winner = 0
+        self.timeout = 0.01  # 10 milliseconds
 
-    def print_move(self, turn:int, move:int):
-        print("".join(Board.char_map[turn] if col==move else " " for col in range(7)))
-        print("".join("|" if col==move else "-" for col in range(7)))
+    def print_move(self, turn: int, move: int):
+        print("".join(Board.char_map[turn] if col == move else " " for col in range(7)))
+        print("".join("|" if col == move else "-" for col in range(7)))
         print(f"{self.c4board}\n")
 
-    def start(self, first:int=1, verbose:bool=False):
+    def start(self, first: int = 1, verbose: bool = False):
         CM = Board.char_map
         if verbose:
             print(f"\nPlayer 1: {self.players[first].name} - {CM[first]},  Player 2: {self.players[-first].name} - {CM[-first]}.\n")
         turn = first
-        while 1:
-            move = self.players[turn].get_move(self.c4board, turn)
+
+        while True:
+            move = None
+            try:
+                with ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(self.players[turn].get_move, self.c4board.copy(), turn)
+                    move = future.result(timeout=self.timeout)
+
+                if not self.c4board.is_valid_move(move):
+                    raise ValueError("Invalid move")
+
+            except TimeoutError:
+                if verbose:
+                    print(f"Player {self.players[turn].name} forfeits due to timeout.")
+                self.winner = -turn
+                break
+            except Exception as e:
+                if verbose:
+                    print(f"Player {self.players[turn].name} forfeits due to error: {e}")
+                self.winner = -turn
+                break
+
             win = self.c4board.move(turn, move)
             self.moves.append(move)
             if verbose:
@@ -87,9 +110,10 @@ class Game():
                 self.winner = win
                 break
             turn *= -1
+
         if verbose:
             if self.winner:
                 print(f"Player {self.players[self.winner].name} wins.")
             else:
-                print("draw.")
+                print("Draw.")
         return self.players[self.winner] if self.winner else None
