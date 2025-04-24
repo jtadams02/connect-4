@@ -21,7 +21,7 @@
 ## Project Website
 For information on our group members, contributions, and more visit our website:  
 
-**[Connect-495](https://www.jtadams02.github.io/connect-4/)**
+**[Connect-495](https://jtadams02.github.io/connect-4/)**
 
 ## Software Setup
 
