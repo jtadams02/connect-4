@@ -68,21 +68,21 @@ All dependencies should be installed, to test the server switch to the ```src/``
 ```
 
 
-## User Guide
+## User Guide  
 
-**Login System**
+### Login System
 
 To login to the Connect-4 website, all you will need is a google account. There is no sign-up option as Django automatically creates a new account for you using the information received by the successful OAUTH call. 
 
-**User Profiles**
+### User Profiles
 
 User Profile pages just hold a history of your uploaded files, and the ability to delete or toggle a file's visibility
 
-**Uploading a Bot:**
+### Uploading a Bot:
 
 The menu link titled Upload Agent takes the user to a page where a python file containing an extension of the standard player class. 
 
-**Running A Tournament:**
+### Running A Tournament:
 
 First select which AI Agents are to be included in the tournament
 This tournament will be a round robin format tournament, so each chosen model will compete against every other model.

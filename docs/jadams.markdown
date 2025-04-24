@@ -3,6 +3,23 @@ layout: page
 title: JT Adams
 permalink: /jt-adams/
 ---
+# Contributions 
+- Google Cloud
+    - Created group account, project, set permissions, etc.
+    - Created & Managed PostgreSQL Server
+    - Setup & Managed hosting via CloudRun & Compute Engine
+- Django
+    - Authentication
+        - Setup all login functionality
+        - Setup Google OAUTH 
+    - Users
+        - Created User accounts
+        - Created User profile page
+        - Linked uploads to Users
+        - Allowed for Users to manage their uploaded files
+    - Views
+        - Styled all pages except file upload
+    
 
 # About Me
 
