@@ -3,20 +3,40 @@ layout: page
 title: Documentation
 permalink: /docs/
 ---
+<h1 align="center">Connect-4</h1>
 
-
-# Software Documentation
+## Software Documentation
 
 Welcome to the documentation! This guide will help you install, use, and modify the software, as well as answer common questions.
 
+
+
+## Table of Contents
+
+- [Software Setup](#software-setup)
+- [User Guide](#user-guide)
+  - [Login System](#login-system)
+  - [User Profiles](#user-profiles)
+  - [Uploading a Bot](#uploading-a-bot)
+  - [Running a Tournament](#running-a-tournament)
+- [Code Overview](#code-overview)
+  - [game_engine.py](#game_enginepy)
+  - [tournament.py](#tournamentpy)
+  - [DefaultPlayer.py](#defaultplayerpy)
+  - [models.py](#modelspy)
+  - [views.py](#viewspy)
+- [File Upload](#file-upload)
+
 ---
 
-## How to Install Software
+## Software Setup
 
 **Download the repository:**
+
    ```bash
    git clone https://github.com/jtadams02/connect-4.git
-    ```S
+   ``` 
+
 **Virtual Enviornment**
 
 First setup the virtual environment by going into the root directory, and running the following 
@@ -48,15 +68,15 @@ All dependencies should be installed, to test the server switch to the ```src/``
 ```
 
 
-# How To Use Each Feature
+## User Guide
 
-**Login System:**
+**Login System**
 
-To-Do
+To login to the Connect-4 website, all you will need is a google account. There is no sign-up option as Django automatically creates a new account for you using the information received by the successful OAUTH call. 
 
-**User Profiles:**
+**User Profiles**
 
-To-Do
+User Profile pages just hold a history of your uploaded files, and the ability to delete or toggle a file's visibility
 
 **Uploading a Bot:**
 
@@ -79,3 +99,45 @@ The section titled Win Percentae Matrix displays the players individualized win 
 
 At the bottom of the page there is an option to export the results of a tournament. This will be a JSON containing the displayed information that can later be uploaded to view these results.
 
+## Code Overview
+### game_engine.py
+
+This is the Connect-4 Engine used by the application.
+
+### tournament.py
+
+This file contains the tournament engine. It executes a round robin format tournament using the game_engine.py. It consists of two classes, Scoreboard and Tournament, and two helper functions.
+
+The Scoreboard class stores the players, game results, and contains a function for displaying the full results of an executed tournament. It accepts a list of players as a parameter and is used by the Tournament class.
+
+The Tournament class accepts a list of player_class_names strings and integer of games_per_match. It loads the players using the get_ai_list function. It then executes the tournament in the run function using python's ThreadPoolExecutor to run the games in parallel. It also tracks and displays time metrics.
+
+The play_match function executes a set number of games between two players. It swaps which player is player1 and player2 each game, this is to prevent the tournament from being biased as the first player has a small advantage in Connect 4.
+
+The get_ai_list function accepts a directory as a parameter and imports a list of all python files as imported modules found in the given directory.
+
+### DefaultPlayer.py
+
+This file, stored in the AI_Scripts folder, is the default player class that all agents are subclasses of. These agents pass moves using the get_move function
+
+### models.py
+
+This contains the django model to run a tournament, stored in the class TournamentExecution. It accepts a list of player_class_names strings and integer of games_per_match. It creates a container in which a tournament is run using these parameters. It then stores the results of the tournament in its results variable.
+
+### views.py
+
+This consists of three possible views; home, register, and export_results.
+
+Home is the primary view for tournament execution. It first loads and displays the list of available ai agents. It calls get_ai_list but discards the imported list of ai modules, only using the names from this call. This is a mild performance inefficiency, however passing imported agents as modules was not functioning correctly so instead calling get_ai_list twice was used.
+
+Upon recieving a POST request it first checks if the user is running a tournament or importing a JSON file of a previous tournament's results. If importing, it displays the recieved data. Otherwise, it executes a tournament using the selected AI Agents.
+
+The Register view is used to allow the user to register a new account.
+
+The export_results view exports the currently displayed tournament results, if it exists. It uses the current exact date to the second as the name of the JSON to ensure unique and useful naming.
+
+### fileupload
+
+The file uploading features of this application were developed as a seperate app in Django, so it has it's own views.py, urls.py, etc. 
+
+Please see the README in the file upload sub-directory to learn more
