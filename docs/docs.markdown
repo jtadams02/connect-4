@@ -5,6 +5,11 @@ permalink: /docs/
 ---
 <h1 align="center">Connect-4</h1>
 
+## Project Website
+For information on our group members, contributions, and more visit our website:  
+
+**[Connect-495](https://www.jtadams02.github.io/connect-4/)**
+
 ## Software Documentation
 
 Welcome to the documentation! This guide will help you install, use, and modify the software, as well as answer common questions.
@@ -13,7 +18,7 @@ Welcome to the documentation! This guide will help you install, use, and modify 
 
 ## Table of Contents
 
-- [Software Setup](#software-setup)
+- [Software Setup](#software-setup) 
 - [User Guide](#user-guide)
   - [Login System](#login-system)
   - [User Profiles](#user-profiles)

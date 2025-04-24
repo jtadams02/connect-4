@@ -17,6 +17,8 @@ permalink: /jt-adams/
         - Created User profile page
         - Linked uploads to Users
         - Allowed for Users to manage their uploaded files
+    - Routing
+        - Setup
     - Views
         - Styled all pages except file upload
     

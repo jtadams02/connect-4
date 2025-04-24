@@ -21,9 +21,15 @@
 
 ## Software Setup
 
+**Download the repository:**
+
+   ```bash
+   git clone https://github.com/jtadams02/connect-4.git
+   ``` 
+
 **Virtual Environment** 
 
-First setup the virtual environment by going into the root directory, and running the following 
+First setup the virtual environment by going into the root project directory, and running the following 
 ```console
 > py -3.13 -m venv .env
 ```
