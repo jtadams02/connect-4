@@ -11,11 +11,15 @@ permalink: /docs/
 
 Welcome to the documentation! This guide will help you install, use, and modify the software, as well as answer common questions.
 
+## Demo Link
+
+Our Demo is currently running at [http://connect-495.com:8000](http://connect-495.com:8000). Feel free to check it out! This demo will only be up for ~3 weeks after 4/25 depending on Google Credits
 
 
 ## Table of Contents
 
-- [Software Setup](#software-setup) 
+- [Frequently Asked Questions](#frequently-asked-questions)
+- [Software Setup](#software-setup)
 - [User Guide](#user-guide)
   - [Login System](#login-system)
   - [User Profiles](#user-profiles)
@@ -30,6 +34,25 @@ Welcome to the documentation! This guide will help you install, use, and modify 
 - [File Upload](#file-upload)
 
 ---
+
+
+## Frequently Asked Questions  
+
+### Why isn’t my uploaded AI file showing up on the tournament page?
+  Make sure your AI script subclasses the ```DefaultPlayer``` class and implements the required ```get_move()``` function. Also, ensure the file is a valid .py file and does not contain syntax errors. Uploaded files may need to be toggled visible on your profile page.  
+
+### Why are some of my tournament results missing or not saving?
+
+This can happen if a tournament is interrupted or the results exceed memory limits. To prevent data loss, make sure to export your tournament results after completion. Also, ensure the TournamentExecution model in Django is not encountering any errors during save operations.
+
+### Can I run this project without Docker?
+
+Yes! While Docker is supported, it’s not required. You can run the project using Django’s development server. Just activate the virtual environment and run python manage.py runserver from the /src directory as described in the Software Setup section.
+
+### What happens if I run too many games or select too many bots?
+
+Large tournaments with many bots or games can cause performance issues or long runtimes. The backend uses multithreading to help, but the processing power of your machine is still a bottleneck. Consider limiting the number of matchups or using a Dockerized environment for heavy workloads.
+
 
 ## Software Setup
 
@@ -68,6 +91,13 @@ All dependencies should be installed, to test the server switch to the ```src/``
 ```console
 > python manage.py runserver
 ```
+
+**Google Cloud Information**  
+This project uses several aspects of Google Cloud. Our database is hosted on the rather expensive, but convienent CloudSQL service Google provides. The cost can be reduced to about ~$10/month, but that still is expensive.  
+
+Hosting can be done by either CloudRun or Google Compute Engine. CloudRun is the more cost effective option, but not as easy to configure.
+
+Although not fully implemented, using Google Cloud Storage is highly advised for continuation of this project. When deploying using docker, the uploaded files are not always persistent. There exists functionality to use Cloud Storage, but that needs to be enabled in the ```fileupload/views.py``` file.
 
 
 ## User Guide  
