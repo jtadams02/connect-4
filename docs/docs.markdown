@@ -17,9 +17,7 @@ Our Demo is currently running at [http://connect-495.com:8000](http://connect-49
 
 ## Guide Video
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=jTrQloAHxV4" 
-frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
+[Video Guide Link](https://www.youtube.com/watch?v=jTrQloAHxV4)
 
 ## Table of Contents
 
