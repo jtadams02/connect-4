@@ -10,6 +10,12 @@ We are creating a full stack webapp for users to upload simple AI Agents capable
 
 Users will be able to store multiple Agents (or versions of an agent) and view the results of previously ran tournaments. Tournament results will include useful statistics on the results.
 
+[GitHub Link](https://github.com/jtadams02/connect-4)
+
+[Project Backlog]( {{ site.baseurl }}/assets/backlog.xlsx)
+
+![Backlog]({{ site.baseurl }}/assets/images/backlog.png)
+
 ![Connect 4 Board]({{ site.baseurl }}/assets/images/connect4.png)
 
 [Download Sprint 1 Documentation]( {{ site.baseurl }}/assets/Sprint1.zip)

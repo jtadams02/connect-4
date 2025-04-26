@@ -15,6 +15,11 @@ Welcome to the documentation! This guide will help you install, use, and modify 
 
 Our Demo is currently running at [http://connect-495.com:8000](http://connect-495.com:8000). Feel free to check it out! This demo will only be up for ~3 weeks after 4/25 depending on Google Credits
 
+## Guide Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=jTrQloAHxV4" 
+frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 
 ## Table of Contents
 
@@ -32,6 +37,7 @@ Our Demo is currently running at [http://connect-495.com:8000](http://connect-49
   - [models.py](#modelspy)
   - [views.py](#viewspy)
 - [File Upload](#file-upload)
+- [User Guide Video](#uservideo)
 
 ---
 
@@ -172,4 +178,31 @@ The export_results view exports the currently displayed tournament results, if i
 
 The file uploading features of this application were developed as a seperate app in Django, so it has it's own views.py, urls.py, etc. 
 
-Please see the README in the file upload sub-directory to learn more
+# forms.py
+
+Minimal form class for use in views.py . Can be updated but will work as is.
+
+
+# views.py
+
+This is the main portion of this app that contains most of the logic surronding the file uploads. This is where updates would be made if needed to the file upload systems.
+
+Contains only one function, current version only uploads to media folder
+
+Commented out portion inside function is used for uploading to google cloud. This is functional but will require setting parameters for your own google cloud accounts / deployment.
+
+Currently saving files to directories on the VM. This is an alternative to storing google cloud bucket URLs in a database. 
+
+
+# urls.py
+
+Sets the url structure for the app.
+
+# media/uploads
+
+Directory in which uploaded media (python connect4 agents) are uploaded and stored in. This is where the VM accesses the uploaded files, but system could be expanded to use the google cloud bucket instead.
+
+
+
+
+
